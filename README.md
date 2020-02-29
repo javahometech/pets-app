@@ -1,6 +1,6 @@
 # pets-app for Weekend DevOps training (15-Feb-2020)
 
-### Maven command to create project
+### Maven command to create java web project
 
 ```
   mvn archetype:generate 
