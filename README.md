@@ -66,4 +66,8 @@
    sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
    sudo yum install jenkins -y
    
+   sudo chkconfig jenkins on
+   
+   sudo service jenkkins start
+   
 ```
