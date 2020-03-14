@@ -46,4 +46,19 @@ pipeline{
 	   }
 
    }
+
+   post {
+      success {
+         // send success message
+         mail body: '''Hi Team,
+The build completed successfully
+Thanks,
+DevOps Team.''', 
+         subject: 'Build - SUCCESS', to: 'javahome2020@gmail.com'
+      }
+      failure {
+         // send failure message
+      }
+   }
+
 }
