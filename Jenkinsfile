@@ -58,6 +58,11 @@ DevOps Team.''',
       }
       failure {
          // send failure message
+         mail body: '''Hi Team,
+The build Failed
+Thanks,
+DevOps Team.''', 
+         subject: 'Build - FAILED', to: 'javahome2020@gmail.com'
       }
    }
 
