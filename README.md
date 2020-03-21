@@ -86,5 +86,8 @@ sudo chown -R ec2-user:ec2-user sonar7/
 
 ```
 #### Configure Sonar as Service
-
+Make sure this entry is present in sonar.sh
+```
+RUN_AS_USER="ec2-user"
+```
 [SonarQube Run as Service](https://docs.sonarqube.org/7.1/RunningSonarQubeasaServiceonLinux.html)
