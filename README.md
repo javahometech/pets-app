@@ -71,3 +71,20 @@
    sudo service jenkkins start
    
 ```
+
+### Install and Run Sonar as Service
+
+```
+sudo yum install java-1.8.0-openjdk -y
+cd /opt/
+sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.1.zip
+sudo unzip sonarqube-7.1.zip
+sudo mv sonarqube-7.1 sonar7
+sudo rm sonarqube-7.1.zip
+sudo chown -R ec2-user:ec2-user sonar7/
+/opt/sonar7/bin/linux-x86-64/sonar.sh start
+
+```
+#### Configure Sonar as Service
+
+['Run as Service'](https://docs.sonarqube.org/7.1/RunningSonarQubeasaServiceonLinux.html)
