@@ -1,69 +1,42 @@
 pipeline{
    agent any
-   tools {
-    maven 'maven3'
+   parameters {
+      booleanParam defaultValue: true, description: 'Do you wanna skip test cases?', name: 'skipTests'
+      choice choices: ['dev','prod'], description: 'Choose env to deploy app', name: 'appEnv'
    }
    stages{
 	
-	   stage('Maven Build/Package'){
+	   stage('Build'){
 	   	steps{
-	   		sh 'mvn clean package'
+	   		echo "building application"
 	   	}
 	   }
 
-      stage('Nexus Deploy'){
-	   	steps{
-            script{
-               def pomFile = readMavenPom file: 'pom.xml'
-               def version = pomFile.version
-               def nexusRepo = version.endsWith("SNAPSHOT") ? "pets-app-snapshot" : "pets-app-release"
-	   		   nexusArtifactUploader artifacts: [[artifactId: 'pets-app', classifier: '', file: 'target/pets-app.war', type: 'war']], 
-                     credentialsId: 'nexus3', 
-                     groupId: 'in.javahome', 
-                     nexusUrl: '172.31.39.4:8081', 
-                     nexusVersion: 'nexus3', 
-                     protocol: 'http', 
-                     repository: nexusRepo, 
-                     version: version
-	   	   }
-         }   
-	   }
-
-      stage('Deploy-Tomcat'){
-	   	steps{
-            script{
-               def userHost = "ec2-user@172.31.47.226"
-               def tomcatBin = "ec2-user@172.31.47.226 /opt/tomcat8/bin"
-	   		   sshagent(['tomcat-dev']) {
-                  // copy war file to tomcat webapps
-                  sh "scp -o StrictHostKeyChecking=no target/*.war ${userHost}:/opt/tomcat8/webapps/pets-app.war"
-                  // stop and start tomcat
-                  sh "ssh ${tomcatBin}/shutdown.sh"
-                  sh "ssh ${tomcatBin}/startup.sh"
-               }
+      stage('Deploy Dev'){
+         // if appEnv is dev then execute this
+         when{
+            expression{
+               params.appEnv == 'dev'
             }
+         }
+	   	steps{
+	   		echo "Deploying to dev"
+            echo "The Job Name is ${JOB_NAME} and build URL is ${BUILD_URL}"
 	   	}
 	   }
 
-   }
+      stage('Deploy Prod'){
+         // if appEnv is prod then execute this
+         when{
+            expression{
+               params.appEnv == 'prod'
+            }
+         }
+	   	steps{
+	   		echo "Deploying to prod"
+	   	}
+	   }
 
-   post {
-      success {
-         // send success message
-         mail body: '''Hi Team,
-The build completed successfully
-Thanks,
-DevOps Team.''', 
-         subject: 'Build - SUCCESS', to: 'javahome2020@gmail.com'
-      }
-      failure {
-         // send failure message
-         mail body: '''Hi Team,
-The build Failed
-Thanks,
-DevOps Team.''', 
-         subject: 'Build - FAILED', to: 'javahome2020@gmail.com'
-      }
    }
 
 }
