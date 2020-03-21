@@ -6,7 +6,6 @@ public class Calculator {
 	}
 	
 	public void someMethod() {
-		String name = null;
-		name.toUpperCase();
+		System.out.println("This is dummy method");
 	}
 }
