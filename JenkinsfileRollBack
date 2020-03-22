@@ -3,19 +3,29 @@ pipeline{
   tools {
     maven 'maven3'
   }
+  parameters {
+    booleanParam defaultValue: false, description: 'Do you want to rollback?', name: 'rollback'
+    string defaultValue: '', description: 'Choose the war file version to deploy', name: 'warVersion', trim: false
+  }
   stages{
     stage('Build'){
+      when{
+        expression { params.rollback != true } 
+      }
       steps{
         sh "mvn clean package"
       }
     }
     
     stage('Upload To Nexus'){
+      when{
+        expression { params.rollback != true } 
+      }
       steps{
           script{
-               def pomFile = readMavenPom file: 'pom.xml'
-               def version = pomFile.version
-               def nexusRepo = version.endsWith("SNAPSHOT") ? "pets-app-snapshot" : "pets-app-release"
+                def pomFile = readMavenPom file: 'pom.xml'
+                def version = pomFile.version
+                def nexusRepo = version.endsWith("SNAPSHOT") ? "pets-app-snapshot" : "pets-app-release"
 	   		        nexusArtifactUploader artifacts: [[artifactId: 'pets-app', classifier: '', file: 'target/pets-app.war', type: 'war']], 
                      credentialsId: 'nexus3', 
                      groupId: 'in.javahome', 
@@ -24,9 +34,18 @@ pipeline{
                      protocol: 'http', 
                      repository: nexusRepo, 
                      version: version
-         }  
+          }  
         }
       }
+
+    stage('Get Previos War - Nexus'){
+      when{
+        expression { params.rollback == true } 
+      }
+      steps{
+        sh "wget --user=admin --password=admin -O target/pets-app.war http://13.126.154.17:8081/repository/pets-app-release/in/javahome/pets-app/${params.warVersion}/pets-app-${params.warVersion}.war"
+      }
+    }
     
     stage('Deploy to Tomcat'){
       steps{
@@ -43,5 +62,5 @@ pipeline{
         }
       }
     }
-}
+  }
 }
