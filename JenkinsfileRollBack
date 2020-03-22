@@ -27,7 +27,6 @@ pipeline{
          }  
         }
       }
-    }
     
     stage('Deploy to Tomcat'){
       steps{
@@ -44,5 +43,4 @@ pipeline{
         }
       }
     }
-  }
 }
