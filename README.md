@@ -91,3 +91,13 @@ Make sure this entry is present in sonar.sh
 RUN_AS_USER="ec2-user"
 ```
 [SonarQube Run as Service](https://docs.sonarqube.org/7.1/RunningSonarQubeasaServiceonLinux.html)
+
+
+### Install & Run Docker on Linux
+```
+   sudo yum install docker -y
+   sudo usermod -a -G docker ec2-user. (Add ec2-user to docker group)
+   sudo chkconfig docker on 
+   sudo service docker start
+   // exit and login again
+```
