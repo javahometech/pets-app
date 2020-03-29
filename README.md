@@ -1,3 +1,6 @@
+# Google Docs Notes Link
+[Google Docs Running Notes](https://docs.google.com/document/d/12pLDe3ONtasPd5FL_RJQZAMqDFDVUUVZBtPOdh6D3I0/edit?usp=sharing)
+
 # pets-app for Weekend DevOps training (15-Feb-2020)
 
 ### Maven command to create java web project
