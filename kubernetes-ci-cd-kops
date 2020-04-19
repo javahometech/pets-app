@@ -5,19 +5,26 @@ pipeline{
   }
   stages{
     stage('Maven Build'){
-      sh "mvn clean package"
+      steps{
+        sh "mvn clean package"
+      }
     }
     stage('Build Docker Image'){
-      sh "docker build -t kammana/pets-app:v1 ."
+      steps{
+        sh "docker build -t kammana/pets-app:v1 ."
+      }
     }
     
     stage('Docker Push'){
-      sh "docker login -u kammana -p *******"
-      sh "docker push kammana/pets-app:v1"
+      steps{
+        sh "docker login -u kammana -p *******"
+        sh "docker push kammana/pets-app:v1"
+      }
     }
     
     stage('Deploy k8s'){
-      kubernetesDeploy configs: 'pods.yml', 
+      steps{
+        kubernetesDeploy configs: 'pods.yml', 
                        kubeConfig: [path: ''], 
                        kubeconfigId: 'k8s-weekend', 
                        secretName: '', 
@@ -27,6 +34,7 @@ pipeline{
                           clientCertificateData: '', 
                           clientKeyData: '', 
                           serverUrl: 'https://']
+      }
     }
   }
 }
