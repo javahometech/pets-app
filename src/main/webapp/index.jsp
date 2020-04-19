@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1 style="color:red">Java Home App 2.0 - Weekend Batch!</h1>
+<h1 style="color:red">Java Home App 3.0 - Weekend Batch!</h1>
   
   
 </body>
