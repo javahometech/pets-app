@@ -27,16 +27,9 @@ pipeline{
     
     stage('Deploy k8s'){
       steps{
+      	sh "sed -i "s/commit_hash/${dockerTag()}/g" pods.yml"
         kubernetesDeploy configs: 'pods.yml', 
-                       kubeConfig: [path: ''], 
-                       kubeconfigId: 'k8s-weekend', 
-                       secretName: '', 
-                       ssh: [sshCredentialsId: '*', sshServer: ''], 
-                       textCredentials: [
-                          certificateAuthorityData: '', 
-                          clientCertificateData: '', 
-                          clientKeyData: '', 
-                          serverUrl: 'https://']
+                       kubeconfigId: 'k8s-weekend'
       }
     }
   }
