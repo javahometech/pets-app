@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
     - name: petsapp
-      image: kammana/pets-app:v1
+      image: kammana/pets-app:v2
       ports:
         - containerPort: 8080
