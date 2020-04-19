@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pets-app
+  labels:
+    app: pets-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pets-app
+  template:
+    metadata:
+      labels:
+        app: pets-app
+    spec:
+      containers:
+      - name: pets-app
+        image: kammana/pets-app:commit_hash
+        ports:
+        - containerPort: 8080
