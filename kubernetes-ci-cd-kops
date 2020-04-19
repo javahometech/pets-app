@@ -11,7 +11,7 @@ pipeline{
     }
     stage('Build Docker Image'){
       steps{
-        sh "docker build -t kammana/pets-app:v2 ."
+        sh "docker build . -t kammana/pets-app:${dockerTag}"
       }
     }
     
@@ -19,7 +19,7 @@ pipeline{
       steps{
         withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
           sh "docker login -u kammana -p ${dockerHubPwd}"
-          sh "docker push kammana/pets-app:v2"
+          sh "docker push kammana/pets-app:${dockerTag}"
         }
         
       }
@@ -40,4 +40,9 @@ pipeline{
       }
     }
   }
+}
+
+def dockerTag(){
+    def commitId = sh returnStdout: true, script: 'git rev-parse --short HEAD'
+	  return commitId
 }
