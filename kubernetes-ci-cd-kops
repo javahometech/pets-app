@@ -17,8 +17,11 @@ pipeline{
     
     stage('Docker Push'){
       steps{
-        sh "docker login -u kammana -p *******"
-        sh "docker push kammana/pets-app:v1"
+        withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
+          sh "docker login -u kammana -p ${dockerHubPwd}"
+          sh "docker push kammana/pets-app:v1"
+        }
+        
       }
     }
     
