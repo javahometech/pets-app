@@ -29,7 +29,7 @@ pipeline{
       steps{
         sh """
 	     VERSION=${dockerTag()}
-	     sed -i "s/commit_hash/\$VERSION/g" pods.yml
+	     sed -i "s/commit_hash/\$VERSION/g" deployment.yml
 	"""
         kubernetesDeploy configs: 'pods.yml', 
                        kubeconfigId: 'k8s-weekend'
