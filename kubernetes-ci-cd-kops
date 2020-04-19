@@ -27,7 +27,8 @@ pipeline{
     
     stage('Deploy k8s'){
       steps{
-      	sh 'sed -i "s/commit_hash/${dockerTag()}/g" pods.yml'
+      	sh "VERSION=${dockerTag()}"
+      	sh 'sed -i "s/commit_hash/$VERSION/g" pods.yml'
         kubernetesDeploy configs: 'pods.yml', 
                        kubeconfigId: 'k8s-weekend'
       }
