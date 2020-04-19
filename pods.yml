@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nodeapp
+  name: pets-app
   labels:
-    app: nodeapp
+    app: pets-app
 spec:
   containers:
     - name: petsapp
