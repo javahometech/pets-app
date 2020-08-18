@@ -1,42 +1,48 @@
 pipeline{
-   agent any
-   parameters {
-      booleanParam defaultValue: true, description: 'Do you wanna skip test cases?', name: 'skipTests'
-      choice choices: ['dev','prod'], description: 'Choose env to deploy app', name: 'appEnv'
-   }
-   stages{
-	
-	   stage('Build'){
-	   	steps{
-	   		echo "building application"
-	   	}
-	   }
-
-      stage('Deploy Dev'){
-         // if appEnv is dev then execute this
-         when{
-            expression{
-               params.appEnv == 'dev'
+    agent any
+    stages{
+        // build only ones i.e. in dev branch
+        stage('Build'){
+            when {
+                branch 'dev'
             }
-         }
-	   	steps{
-	   		echo "Deploying to dev"
-            echo "The Job Name is ${JOB_NAME} and build URL is ${BUILD_URL}"
-	   	}
-	   }
-
-      stage('Deploy Prod'){
-         // if appEnv is prod then execute this
-         when{
-            expression{
-               params.appEnv == 'prod'
+            steps{
+                echo "building latest code"
             }
-         }
-	   	steps{
-	   		echo "Deploying to prod"
-	   	}
-	   }
+        }
+        // upload war file to nexus i.e. only ones in dev branch
+        stage('Upload to Nexus'){
+            when {
+                branch 'dev'
+            }
+            steps{
+                echo "uploading war to nexus"
+            }
+        }
+        stage('Deploy to dev'){
+            when {
+                branch 'dev'
+            }
+            steps{
+                echo "deploying to dev environment"
+            }
+        }
+        stage('Deploy to staging'){
+            when {
+                branch 'staging'
+            }
+            steps{
+                echo "deploying to staging environment"
+            }
+        }
 
-   }
-
+        stage('Deploy to prod'){
+            when {
+                branch 'master'
+            }
+            steps{
+                echo "deploying to production environment"
+            }
+        }
+    }
 }
