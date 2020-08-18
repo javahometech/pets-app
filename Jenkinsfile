@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    tools {
+        maven 'maven3'
+    }
     stages{
         // build only ones i.e. in dev branch
         stage('Build'){
@@ -7,7 +10,7 @@ pipeline{
                 branch 'dev'
             }
             steps{
-                echo "building latest code"
+                sh "mvn clean package"
             }
         }
         // upload war file to nexus i.e. only ones in dev branch
