@@ -3,6 +3,7 @@ pipeline{
     triggers {
         githubPush()
     }
+    // githubPush() trigger demo
     tools {
         maven 'maven3'
     }
