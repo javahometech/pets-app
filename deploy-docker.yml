@@ -1,6 +1,6 @@
 ---
 
-- hosts: 172.31.37.105
+- hosts: 172.31.2.85
   become: True
   tasks:
     - name: install pip
